@@ -12,9 +12,8 @@ image.onclick = function() {
 }
 
 var button = document.querySelector("button");
-button.onclick = function() {
-    setUserName();
-}
+button.onclick = setUserName;
+
 
 function setUserName() {
     var name = prompt("Please enter your name");
