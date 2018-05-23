@@ -1,0 +1,11 @@
+html {
+font-size: 10px;
+font-family: 'Oswald', sans-serif;
+}
+
+h1 {
+	font-size: 60px;
+	text-align: left;
+	margin: 0;
+	padding: 20px 240px;
+}
