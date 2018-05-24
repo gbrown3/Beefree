@@ -7,8 +7,8 @@ var canvasContext;
 
 var waitingToStart = true;
 
-const numRows = 5;
-const numColumns = 5;
+const NUM_ROWS = 5;
+const NUM_COLUMNS = 5;
 var brickwall;
 
 const BALL_RADIUS = 10;
@@ -29,7 +29,7 @@ window.onload = function() {
     canvasContext = canvas.getContext("2d");
 
     utils.colorRect(canvasContext, 0, 0, canvas.width, canvas.height, "black");  // intialize canvas as black using helper function
-    brickwall = new Brickwall(canvasContext, numRows, numColumns);
+    brickwall = new Brickwall(canvasContext, NUM_ROWS, NUM_COLUMNS);
 
     // Set up main loop
     var framesPerSecond = 60;
@@ -113,6 +113,20 @@ function moveBall() {
         }
     }
 
+    // If ball could be within the brick wall
+    if (ballY <= brickwall.bottom) {
+
+        if (brickwall.checkWall(ballX, ballY)) {
+            ballSpeedY = -ballSpeedY;
+            if (ballY < brickwall.bottom) {
+                ballSpeedX = -ballSpeedX;
+            }
+        }
+        else {
+            if (ballY <= 0 ) { ballSpeedY = -ballSpeedY; }
+        }
+    }
+
     
 
 
@@ -122,7 +136,10 @@ function moveBall() {
 
 function reset() {
     waitingToStart = true;
-    // reset score maybe too?
+    brickwall = new Brickwall(canvasContext, NUM_ROWS, NUM_COLUMNS);
+    ballSpeedX = 2;
+    ballSpeedY = -2;
+
 }
 
 // // Draws a rectangle on the canvas
