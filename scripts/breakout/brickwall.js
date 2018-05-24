@@ -3,9 +3,9 @@
 // Brickwall Class
 // Contains data about each brick, so it can determine which bricks should be drawn
 
-const BRICK_SPACING = 10;
+const BRICK_SPACING = 6;
 const BRICK_WIDTH = 100;
-const BRICK_HEIGHT = 10;
+const BRICK_HEIGHT = 25;
 
 
 function Brickwall(canvasContext, numRows, numColumns) {
@@ -35,17 +35,65 @@ function intialBrickList(numRows, numColumns) {
 
         for (var j = 0; j < numColumns; j++) {
 
-            var brick = new Brick( (j-1)*BRICK_WIDTH, (i-1)*BRICK_HEIGHT, BRICK_WIDTH, BRICK_HEIGHT, "blue");
+            var brick = new Brick( j*BRICK_WIDTH, i*BRICK_HEIGHT, BRICK_WIDTH, BRICK_HEIGHT, "white");
             
             if (j !== 0) { 
-                brick.x += BRICK_SPACING;
-                brick.y += BRICK_SPACING;
-            }    // Only add spacing if it's not the first
+                brick.x += BRICK_SPACING * j;
+            }    
+            if (i !== 0) {
+                brick.y += BRICK_SPACING * i;
+            }
+
+            brick.color = determineBrickColor(i, numColumns);
 
             bricklist.push(brick);
-
         }
     }
 
     return bricklist;
 }
+
+
+function determineBrickColor(i, numRows) {
+
+    if (i === 0) {
+        return "blue";
+    }
+    else {
+
+        var color;
+
+        switch (i % numRows) {
+            case 1:
+                color = "green";
+                break;
+            case 2:
+                color = "yellow";
+                break;
+            case 3:
+                color = "orange";
+                break;
+            case 4:
+                color = "red";
+                break;
+            default:
+                color = "white";
+                break;
+        }
+
+        return color;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
