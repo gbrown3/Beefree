@@ -7,8 +7,8 @@ var canvasContext;
 
 var waitingToStart = true;
 
-const NUM_ROWS = 5;
-const NUM_COLUMNS = 5;
+const NUM_ROWS = 6;
+const NUM_COLUMNS = 7;
 var brickwall;
 
 const BALL_RADIUS = 10;
@@ -29,7 +29,7 @@ window.onload = function() {
     canvasContext = canvas.getContext("2d");
 
     utils.colorRect(canvasContext, 0, 0, canvas.width, canvas.height, "black");  // intialize canvas as black using helper function
-    brickwall = new Brickwall(canvasContext, NUM_ROWS, NUM_COLUMNS);
+    brickwall = new Brickwall(canvasContext, canvas.width, NUM_ROWS, NUM_COLUMNS);
 
     // Set up main loop
     var framesPerSecond = 60;
@@ -53,6 +53,9 @@ function draw() {
     // Clear screen
     utils.colorRect(canvasContext, 0, 0, canvas.width, canvas.height, "black");
 
+    // Draw bricks
+    brickwall.draw(canvasContext); 
+
     if (waitingToStart) { 
         // Draw in ball and paddle at center position
         utils.colorRect(canvasContext, canvas.width/2 - (PADDLE_WIDTH/2), canvas.height - PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT, "white");
@@ -75,9 +78,6 @@ function draw() {
 
     // Draw ball
     colorCircle(ballX, ballY, BALL_RADIUS, "white");   
-
-    // Draw bricks
-    brickwall.draw(canvasContext); 
 }
 
 function calcMousePos(evt) {
@@ -109,7 +109,7 @@ function moveBall() {
 
             // Give player better control of ball direction
             var deltaX = ballX - (playerPaddleX + PADDLE_WIDTH/2);   // distance between ball and center of paddle
-            ballSpeedX = deltaX * .35;
+            ballSpeedX = deltaX * 0.25;
         }
     }
 
@@ -136,17 +136,11 @@ function moveBall() {
 
 function reset() {
     waitingToStart = true;
-    brickwall = new Brickwall(canvasContext, NUM_ROWS, NUM_COLUMNS);
+    brickwall = new Brickwall(canvasContext, canvas.width, NUM_ROWS, NUM_COLUMNS);
     ballSpeedX = 2;
     ballSpeedY = -2;
 
 }
-
-// // Draws a rectangle on the canvas
-// function colorRect(x, y, width, height, color) {
-//     canvasContext.fillStyle = color;
-//     canvasContext.fillRect(x, y, width, height);
-// }
 
 // Draws a circle on the canvas
 function colorCircle(x, y, radius, color) {

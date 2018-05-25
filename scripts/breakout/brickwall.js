@@ -4,13 +4,14 @@
 // Contains data about each brick, so it can determine which bricks should be drawn
 
 const BRICK_SPACING = 6;
-const BRICK_WIDTH = 100;
 const BRICK_HEIGHT = 25;
 
 
-function Brickwall(canvasContext, numRows, numColumns) {
+function Brickwall(canvasContext, canvasWidth, numRows, numColumns) {
     this.canvasContext = canvasContext;
-    this.bricks = intialBrickList(numRows, numColumns);
+    this.brickWidth = utils.getBrickWidth(numColumns, canvasWidth, BRICK_SPACING);
+    //console.log("Brickwidth: " + this.brick)
+    this.bricks = this.intialBrickList(numRows, numColumns);
     this.bottom = determineBottom(numRows);
 }
 
@@ -70,37 +71,36 @@ Brickwall.prototype = {
             this.bricks.splice(indexOfHitBrick, 1);
             return true;
         }
-    }
+    },
 
-}
+    intialBrickList:function(numRows, numColumns) {
 
-function intialBrickList(numRows, numColumns) {
+        var bricklist = [];
 
-    var bricklist = [];
+        for (var i = 0; i < numRows; i++) {
 
-    for (var i = 0; i < numRows; i++) {
+            for (var j = 0; j < numColumns; j++) {
 
-        for (var j = 0; j < numColumns; j++) {
-
-            var brick = new Brick( j*BRICK_WIDTH, i*BRICK_HEIGHT, BRICK_WIDTH, BRICK_HEIGHT, "white");
+                var brick = new Brick( j*this.brickWidth, i*BRICK_HEIGHT, this.brickWidth, BRICK_HEIGHT, "white");
             
-            if (j !== 0) { 
-                brick.x += BRICK_SPACING * j;
-            }    
-            if (i !== 0) {
-                brick.y += BRICK_SPACING * i;
+                if (j !== 0) { 
+                    brick.x += BRICK_SPACING * j;
+                }    
+                if (i !== 0) {
+                    brick.y += BRICK_SPACING * i;
+                }
+
+                brick.color = utils.determineBrickColor(i, numColumns);
+
+                bricklist.push(brick);
             }
-
-            brick.color = determineBrickColor(i, numColumns);
-
-            bricklist.push(brick);
         }
+
+        return bricklist;
+
     }
 
-    return bricklist;
 }
-
-
 
 
 // Returns the y value for the very bottom edge of the brick wall;
@@ -118,36 +118,36 @@ function determineBottom(numRows) {
 }
 
 
-function determineBrickColor(i, numRows) {
+// function determineBrickColor(i, numRows) {
 
-    if (i === 0) {
-        return "blue";
-    }
-    else {
+//     if (i === 0) {
+//         return "blue";
+//     }
+//     else {
 
-        var color;
+//         var color;
 
-        switch (i % numRows) {
-            case 1:
-                color = "green";
-                break;
-            case 2:
-                color = "yellow";
-                break;
-            case 3:
-                color = "orange";
-                break;
-            case 4:
-                color = "red";
-                break;
-            default:
-                color = "white";
-                break;
-        }
+//         switch (i % numRows) {
+//             case 1:
+//                 color = "green";
+//                 break;
+//             case 2:
+//                 color = "yellow";
+//                 break;
+//             case 3:
+//                 color = "orange";
+//                 break;
+//             case 4:
+//                 color = "red";
+//                 break;
+//             default:
+//                 color = "white";
+//                 break;
+//         }
 
-        return color;
-    }
-}
+//         return color;
+//     }
+// }
 
 
 
