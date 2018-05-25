@@ -96,7 +96,10 @@ function calcMousePos(evt) {
 
 function moveBall() {
 
-    if (ballX <= 0 || ballX >= canvas.width) { ballSpeedX = -ballSpeedX; }
+    if (ballX <= 0 || ballX >= canvas.width) { 
+        ballSpeedX = -ballSpeedX; 
+        utils.playSound("blip-1");
+    }
 
     //if (ballY <= 0 || ballY >= canvas.height) { ballSpeedY = -ballSpeedY; }
 
@@ -110,6 +113,8 @@ function moveBall() {
             // Give player better control of ball direction
             var deltaX = ballX - (playerPaddleX + PADDLE_WIDTH/2);   // distance between ball and center of paddle
             ballSpeedX = deltaX * 0.25;
+
+            utils.playSound("blip-1");
         }
     }
 
@@ -117,17 +122,23 @@ function moveBall() {
     if (ballY <= brickwall.bottom) {
 
         if (brickwall.checkWall(ballX, ballY)) {
+
             ballSpeedY = -ballSpeedY;
+
             if (ballY < brickwall.bottom) {
                 ballSpeedX = -ballSpeedX;
             }
+
+            utils.playSound("tap-1");
         }
         else {
-            if (ballY <= 0 ) { ballSpeedY = -ballSpeedY; }
+            if (ballY <= 0 ) { 
+
+                ballSpeedY = -ballSpeedY; 
+                utils.playSound("tap-1");
+            }
         }
     }
-
-    
 
 
     ballX += ballSpeedX;

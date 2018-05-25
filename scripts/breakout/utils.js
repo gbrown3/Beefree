@@ -52,10 +52,27 @@ function Utils() {
 
             return color;
         }
-    }
+    };
+
+    this.playSound = function(fileName) {
+
+        var sound = document.getElementById(fileName);
+        sound.play();
+    };
 }
 
-function determineBrickColor(i, numRows) {
 
-    
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
