@@ -6,9 +6,11 @@ var canvas;
 var canvasContext;
 
 var waitingToStart = true;
+var winLoseText = "";
 
-const NUM_ROWS = 6;
-const NUM_COLUMNS = 7;
+
+const NUM_ROWS = 6; //6;
+const NUM_COLUMNS = 7; //7;
 var brickwall;
 
 const BALL_RADIUS = 10;
@@ -16,7 +18,7 @@ const INITIAL_BALLSPEEDY = 2;
 var ballX;
 var ballY;
 var ballSpeedX = 2;
-var ballSpeedY = -2;
+var ballSpeedY = -5;  //-2;
 
 const PADDLE_HEIGHT = 10;
 const PADDLE_WIDTH = 100;
@@ -45,6 +47,7 @@ window.onload = function() {
         function() {
             if (waitingToStart) {
                 waitingToStart = false;
+                reset();
             }
         });
 }
@@ -56,7 +59,22 @@ function draw() {
     // Draw bricks
     brickwall.draw(canvasContext); 
 
+    // Check for win
+    if (brickwall.bricks.length === 0) {
+        winLoseText = "YOU WIN!";
+        waitingToStart = true;
+    }
+
     if (waitingToStart) { 
+
+        // Draw win/lose text if valid
+        if (winLoseText === "YOU WIN!") { canvasContext.fillStyle = "green"; }
+        else { canvasContext.fillStyle = "red"; }
+        
+        canvasContext.font = '30px Arial';
+        canvasContext.textAlign = 'center';
+        canvasContext.fillText(winLoseText, canvas.width/2, canvas.height/2);
+
         // Draw in ball and paddle at center position
         utils.colorRect(canvasContext, canvas.width/2 - (PADDLE_WIDTH/2), canvas.height - PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT, "white");
 
@@ -66,7 +84,8 @@ function draw() {
 
         canvasContext.fillStyle = "white";
         canvasContext.font = '15px Arial';
-        canvasContext.fillText("click to start", canvas.width/2 - 45, canvas.height/2 + 100);
+        canvasContext.textAlign = 'center';
+        canvasContext.fillText("click to start", canvas.width/2, canvas.height/2 + 100);
 
         return;
     }
@@ -106,7 +125,10 @@ function moveBall() {
     if (ballY >= canvas.height - PADDLE_HEIGHT) {
 
         if (ballX < playerPaddleX || ballX > (playerPaddleX + PADDLE_WIDTH)) {
-            reset();
+
+            waitingToStart = true;
+            winLoseText = "YOU LOSE";
+
         } else {
             ballSpeedY = -ballSpeedY;
 
@@ -145,12 +167,12 @@ function moveBall() {
     ballY += ballSpeedY;
 }
 
+// Makes a fresh brick wall, normalizes the ball speeds
 function reset() {
-    waitingToStart = true;
+
     brickwall = new Brickwall(canvasContext, canvas.width, NUM_ROWS, NUM_COLUMNS);
     ballSpeedX = 2;
     ballSpeedY = -2;
-
 }
 
 // Draws a circle on the canvas
