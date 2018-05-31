@@ -9,8 +9,8 @@ var waitingToStart = true;
 var winLoseText = "";
 
 
-const NUM_ROWS = 6; //6;
-const NUM_COLUMNS = 7; //7;
+const NUM_ROWS = 6;
+const NUM_COLUMNS = 7;
 var brickwall;
 
 const BALL_RADIUS = 10;
@@ -18,7 +18,7 @@ const INITIAL_BALLSPEEDY = 2;
 var ballX;
 var ballY;
 var ballSpeedX = 2;
-var ballSpeedY = -5;  //-2;
+var ballSpeedY = -5;
 
 const PADDLE_HEIGHT = 10;
 const PADDLE_WIDTH = 100;
@@ -70,7 +70,7 @@ function draw() {
         // Draw win/lose text if valid
         if (winLoseText === "YOU WIN!") { canvasContext.fillStyle = "green"; }
         else { canvasContext.fillStyle = "red"; }
-        
+
         canvasContext.font = '30px Arial';
         canvasContext.textAlign = 'center';
         canvasContext.fillText(winLoseText, canvas.width/2, canvas.height/2);
@@ -79,7 +79,7 @@ function draw() {
         utils.colorRect(canvasContext, canvas.width/2 - (PADDLE_WIDTH/2), canvas.height - PADDLE_HEIGHT, PADDLE_WIDTH, PADDLE_HEIGHT, "white");
 
         ballX = canvas.width/2;
-        ballY = canvas.height - PADDLE_HEIGHT - BALL_RADIUS;
+        ballY = canvas.height - PADDLE_HEIGHT - BALL_RADIUS - 1;
         colorCircle(ballX, ballY, BALL_RADIUS, "white");
 
         canvasContext.fillStyle = "white";
@@ -115,14 +115,14 @@ function calcMousePos(evt) {
 
 function moveBall() {
 
-    if (ballX <= 0 || ballX >= canvas.width) { 
+    if (ballX - BALL_RADIUS <= 0 || ballX + BALL_RADIUS >= canvas.width) { 
         ballSpeedX = -ballSpeedX; 
         utils.playSound("blip-1");
     }
 
     //if (ballY <= 0 || ballY >= canvas.height) { ballSpeedY = -ballSpeedY; }
 
-    if (ballY >= canvas.height - PADDLE_HEIGHT) {
+    if (ballY + BALL_RADIUS >= canvas.height - PADDLE_HEIGHT) {
 
         if (ballX < playerPaddleX || ballX > (playerPaddleX + PADDLE_WIDTH)) {
 
@@ -141,7 +141,7 @@ function moveBall() {
     }
 
     // If ball could be within the brick wall
-    if (ballY <= brickwall.bottom) {
+    if (ballY - BALL_RADIUS <= brickwall.bottom) {
 
         if (brickwall.checkWall(ballX, ballY)) {
 
